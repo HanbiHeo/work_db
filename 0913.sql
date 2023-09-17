@@ -62,7 +62,7 @@ SELECT *
 FROM EMP
 WHERE SAL >= 3000 AND DEPTNO = 20;
 
---급여가 3000 이상이고, 부서가 20번 이고, 입사일이 82년 1워 1일 이전 입사인 사원 조회.
+--급여가 3000 이상이고, 부서가 20번 이고, 입사일이 82년 1월 1일 이전 입사인 사원 조회.
 SELECT *
 FROM EMP
 WHERE SAL >= 3000 AND DEPTNO = 20; AND HIREDATE < '82/01/01';
@@ -121,8 +121,8 @@ WHERE NOT HIREDATE BETWEEN '1980/01/01' AND '1980/12/31';
 -- _ : 문자 1자를 의미
 SELECT EMPNO, ENAME
 FROM EMP
-WHERE ENAME LIKE '%K%'; --K 앞뒤의 문자 길이 상관없이 0부터 무한대까지
-
+WHERE ENAME LIKE '%K%'; 
+--K 앞뒤의 문자 길이 상관없이 0부터 무한대까지
 SELECT *
 FROM EMP
 WHERE ENAME LIKE '_L%';
