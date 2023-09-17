@@ -1,4 +1,6 @@
 --정렬을 위한 ORDER BY DELETE
+--정렬을 위한 ORDER BY DELETE
+--정렬을 위한 ORDER BY DELETE
 SELECT * FROM EMP
 ORDER BY SAL asc; --ASC는 오름차순
 
