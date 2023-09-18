@@ -203,7 +203,7 @@ WHERE E1.MGR = E2.EMPNO;
 --외부조인은 동등조인조검을 만족하지 못해 누락되는 행을 출력하기 위해 사용
 SELECT*FROM EMP;
 INSERT INTO EMP(EMPNO, ENAME, JOB, MGR, HIREDATE, SAL, COMM, DEPTNO)
-    VALUES(9000, '이찬혁', 'SALESMAN', 7698, SYSDATE, 2000, 1000, NULL);
+    VALUES(9001, '이찬혁', 'SALESMAN', 7698, SYSDATE, 2000, 1000, NULL);
 
 --왼쪽기준 외부 조인 사용하기
 SELECT ENAME, E.DEPTNO, DNAME
@@ -264,6 +264,90 @@ FROM EMP E JOIN DEPT D USING(DEPTNO)
 GROUP BY DEPTNO;
 --3. 모든 부서정보와 사원정보를 부서번호, 사원 이름순으로 정렬
 SELECT E.DEPTNO, DNAME, EMPNO, ENAME, JOB, SAL
-FROM EMP E LEFT OUTER JOIN DEPT D
+FROM EMP E RIGHT OUTER JOIN DEPT D
 ON E.EMPNO = D.DEPTNO
 ORDER BY E.DEPTNO, ENAME;
+
+
+----------------------------------------------------
+--서브쿼리 : 어떤 상황이나 조건에 따라 변할 수 있는 데이터값을 비교하기 위해 SQL문 안에 작성하는 작은 SELECT 문을 의미함. 결론적으로 킹이라는 이름을 가진 사원의 부서 이름을 찾기위한 쿼리문임.
+SELECT DNAME FROM DEPT
+WHERE DEPTNO = (SELECT  DEPTNO FROM EMP
+                WHERE ENAME = 'KING');
+
+--사원 JONES의 급여보다 높은 급여를 받는 사원 정보 출력하기
+SELECT *
+FROM EMP
+WHERE SAL > (SELECT SAL FROM EMP 
+            WHERE ENAME = 'JONES');
+--EMP테이블의 사원정보 중 사원이름이 'ALLEN'인 사원의 추가수당보다 많은 사원 출력
+SELECT *
+FROM EMP
+WHERE COMM > (SELECT COMM FROM EMP
+            WHERE ENAME = 'ALLEN');
+
+--EMP테이블의 사원중 'JAMES'보다 먼저 입사한 사람 뽑기
+SELECT *
+FROM EMP
+WHERE HIREDATE < (SELECT HIREDATE FROM EMP
+                WHERE ENAME = 'JAMES');
+
+--20번 부서에 속한 사원 중 전체 사원의 평균 급여보다 높은 급여를 받는 사원정보와 소속부서 정보를 조회하는 경우에 대한 쿼리를 작성
+SELECT EMPNO, ENAME, JOB, SAL, D.DEPTNO, DNAME, LOC
+FROM EMP E JOIN DEPT D
+ON E.DEPTNO = D.DEPTNO
+WHERE E.DEPTNO = 20
+AND SAL > (SELECT AVG(SAL) FROM EMP);
+
+--다중행 서브쿼리: 서브쿼리의 실행결과 행이 여러개로 나오는 서브쿼리의
+--IN: 메인 쿼리의 데이터가 서브쿼리의 결과 중 하나라도 일치하면 TRUE
+--ANY: 하나라도 만족하면 TRUE
+--각 부서별 최대 급여와 동일한 급여를 받는 사원정보를 출력
+SELECT *
+FROM EMP
+WHERE SAL IN (SELECT MAX(SAL) FROM EMP
+            GROUP BY DEPTNO);
+
+--ANY: 메인 쿼리의 비교조건이 서브 쿼리의 여러 검색결과 중 하나 이상 만족되면 반환
+SELECT EMPNO, ENAME, SAL
+FROM EMP
+WHERE SAL > ANY (SELECT SAL
+                FROM EMP
+                WHERE JOB = 'SALESMAN');
+
+--30번 부서 사원들의 급여보다 적은 급여를 받는 사원 정보 출력
+--ALL연산자: 모든 조건을 만족하는 경우에 성립
+SELECT *
+FROM EMP
+WHERE SAL < ALL(SELECT SAL
+                FROM EMP
+                WHERE DEPTNO = 30);
+
+SELECT EMPNO, ENAME, SAL
+FROM EMP
+WHERE SAL > ALL (SELECT SAL
+                FROM EMP
+                WHERE JOB = 'MANAGER');
+
+--EXISTS연산자: 서브쿼리의 결과값이 하나이상 존재하면 조건식이 모두 참이됨, 존재하지 않으면 모두 거짓 
+SELECT *
+FROM EMP
+WHERE EXISTS (SELECT DNAME
+                FROM DEPT 
+                WHERE DEPTNO = 40);
+
+--다중열 서브쿼리: 서브쿼리의 결과가 두개이상의 컬럼으로 반환되어 메인 쿼리에 전달하는 쿼리
+SELECT EMPNO, ENAME, SAL, DEPTNO
+FROM EMP
+WHERE (DEPTNO, SAL) 
+IN (SELECT DEPTNO, SAL 
+    FROM EMP
+    WHERE DEPTNO = 30);
+
+--GROUP BY 절이 포함된 다중열 서브쿼리(부서별 집계함수)
+SELECT *
+FROM EMP
+WHERE (DEPTNO, SAL) 
+IN (SELECT DEPTNO, MAX(SAL)
+    FROM EMP
+    GROUP BY DEPTNO);
