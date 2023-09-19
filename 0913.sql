@@ -97,7 +97,7 @@ FROM EMP
 WHERE DEPTNO NOT IN (20,30);
 
 -- BETWEEN A AND B 연산자 : 일정한 범위를 조회할 때 사용하는 연산자
---급여가 2000 이상 3000이하 인 사언 조회
+--급여가 2000 이상 3000이하 인 사원 조회
 SELECT *
 FROM EMP
 WHERE SAL >= 2000 AND SAL <= 3000;
@@ -114,7 +114,7 @@ WHERE EMPNO BETWEEN 7689 AND 9702;
 --1980년에 입사하지 않은 사원 조회
 SELECT *
 FROM EMP
-WHERE NOT HIREDATE BETWEEN '1980/01/01' AND '1980/12/31';
+WHERE HIREDATE NOT BETWEEN TO_DATE('1980/01/01','YYYY/MM/DD') AND TO_DATE('1980/12/31','YYYY/MM/DD');
 
 --LIKE, NOT LIKE 연산자 : 일부 문자열에 포함되어 있는지 여부 확인하는 연산자, 주로 검색에서 사용
 -- % : 길이와 상관없이 모든 문자를 의미
