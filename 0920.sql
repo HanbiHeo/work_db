@@ -147,11 +147,34 @@ SELECT* FROM TABLE_DEFAULT;
 
 
 --시퀀스란? 오라클에서 특정 규칙에 맞는 연속적인 숫자를 생성하는 객체
+CREATE TABLE DEPT_SEQ(
+    DEPTNO NUMBER(2) PRIMARY KEY,
+    DNAME VARCHAR2(14),
+    LOC VARCHAR2(13)
+);
+
+CREATE SEQUENCE SEQ_DEPT_SEQUENCE
+INCREMENT BY 10 --한번에 얼마만큼 증가시킬 것인지, 증가값
+START WITH 10 -- 시작값
+MAXVALUE 90 --최대값
+MINVALUE 0 --최소값
+NOCYCLE --NOCYCLE이면 번호생성이 중단되고, 추가번호 생성시 오류.
+CACHE 2; --시퀀스가 생성할 번호를 메모리에 미리 할댕해 놓은 수를 지정. NOCACHE는 미리 생성하지 않도록 지정
+
+INSERT INTO DEPT_SEQ VALUES(SEQ_DEPT_SEQUENCE.NEXTVAL, 'DATABASE', 'SEOUL');
+SELECT* FROM DEPT_SEQ;
+
+-- ## VO(Value Object)
+
+-- VO는 데이터베이스에서 가져온 레코드를 자바 객체로 매핑하는 데 사용됩니다. VO 객체는 데이터베이스 테이블의 각 컬럼에 해당하는 멤버 변수를 갖습니다. VO 객체를 사용하면 데이터베이스에서 가져온 레코드를 객체화하여 다양한 처리를 수행할 수 있습니다. 보여지는 정보. 
+
+-- ## DAO(Database Access Object)
+
+-- DAO는 데이터베이스에 접근하여 데이터를 조회하거나 수정하는 데 사용됩니다. DAO는 VO 객체와 데이터베이스 간의 매핑을 담당하며, VO 객체를 이용하여 데이터베이스의 레코드를 조회하거나 수정합니다.
 
 
 
-
-
-
-
-
+SELECT *
+FROM EMP;
+INSERT INTO EMP VALUES(9003, '이수현', '악뮤', 9001, '20/SEP/2023', 2000, 200, 10);
+INSERT INTO EMP VALUES(9004, '이수현', '악뮤', 9001, '20/SEP/2023', 2000, 200, 10);

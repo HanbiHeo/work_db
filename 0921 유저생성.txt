@@ -1,0 +1,87 @@
+SQL> create user test_user1 identified by 1234;
+
+User created.
+
+SQL> select * from all_users where username='test_user1';
+
+no rows selected
+
+SQL> create user TEST_USER2 identified by 1234;
+
+User created.
+
+SQL> select * from all_users where username='TEST_USER1';
+
+USERNAME                                                        USER_ID CREATED
+------------------------------------------------------------ ---------- --------
+TEST_USER1                                                           49 23/09/21
+
+// 대문자로 해야 검색시 조회됨. 소문자 생성시 생성은 되나, 조회 힘듦
+----------------------------------------------------------------------------------------------
+S
+hhb03@DESKTOP-F4QGJRU MINGW64 ~/Desktop (master)
+$ sqlplus sys/1234 as sysdba;
+
+SQL*Plus: Release 11.2.0.2.0 Production on 목 9월 21 10:23:02 2023
+
+Copyright (c) 1982, 2014, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Express Edition Release 11.2.0.2.0 - 64bit Production
+
+SQL> create user test_user1 identified by 1234;
+
+User created.
+
+SQL> select * from all_users where username='test_user1';
+
+no rows selected
+
+SQL> create user TEST_USER2 identified by 1234;
+
+User created.
+
+SQL> select * from all_users where username='TEST_USER1';
+
+USERNAME                                                        USER_ID CREATED
+------------------------------------------------------------ ---------- --------
+TEST_USER1                                                           49 23/09/21
+
+SQL>
+
+hhb03@DESKTOP-F4QGJRU MINGW64 ~/Desktop (master)
+$ grant creat session to TEST_USER1;
+bash: grant: command not found
+
+hhb03@DESKTOP-F4QGJRU MINGW64 ~/Desktop (master)
+$ grant creat session to TEST_USER2;
+bash: grant: command not found
+
+hhb03@DESKTOP-F4QGJRU MINGW64 ~/Desktop (master)
+$ grant creat table to TEST_USER2;
+bash: grant: command not found
+
+hhb03@DESKTOP-F4QGJRU MINGW64 ~/Desktop (master)
+$ drop user TEST_USER2;
+bash: drop: command not found
+
+hhb03@DESKTOP-F4QGJRU MINGW64 ~/Desktop (master)
+$ grant create session to TEST_USER1;
+bash: grant: command not found
+
+hhb03@DESKTOP-F4QGJRU MINGW64 ~/Desktop (master)
+$ create user TEST_USER1 identified by 1234;
+bash: create: command not found
+
+hhb03@DESKTOP-F4QGJRU MINGW64 ~/Desktop (master)
+$ select * from all_users where username = 'TEST_USER1';
+bash: syntax error near unexpected token `from'
+
+hhb03@DESKTOP-F4QGJRU MINGW64 ~/Desktop (master)
+$ select * from all_users where username='TEST_USER1';
+bash: syntax error near unexpected token `from'
+
+hhb03@DESKTOP-F4QGJRU MINGW64 ~/Desktop (master)
+$ ^Ceate user TEST_USER1 identified by 1234;
+

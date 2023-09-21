@@ -1,0 +1,18 @@
+터미널
+hhb03@DESKTOP-F4QGJRU MINGW64 ~/Desktop (master)
+$ sqlplus sys/1234 as sysdba
+
+SQL*Plus: Release 11.2.0.2.0 Production on 목 9월 21 10:15:57 2023
+
+Copyright (c) 1982, 2014, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Express Edition Release 11.2.0.2.0 - 64bit Production
+
+SQL> grant create view to SCOTT;
+
+Grant succeeded.
+
+SQL> exit
+Disconnected from Oracle Database 11g Express Edition Release 11.2.0.2.0 - 64bit Production
